@@ -1,0 +1,62 @@
+Certainly! Here are 10 simple analyses you can perform using base R, without any additional libraries:
+
+1. **Calculate Summary Statistics**:
+   ```R
+   summary(data)
+   ```
+
+2. **Mean Incidence, Prevalence, and Mortality Rates**:
+   ```R
+   mean_incidence <- mean(data$e_inc_100k, na.rm = TRUE)
+   mean_prevalence <- mean(data$e_prev_100k, na.rm = TRUE)
+   mean_mortality <- mean(data$e_mort_exc_tbhiv_100k, na.rm = TRUE)
+   print(paste("Mean Incidence:", mean_incidence))
+   print(paste("Mean Prevalence:", mean_prevalence))
+   print(paste("Mean Mortality:", mean_mortality))
+   ```
+
+3. **Bar Chart of Incidence by Region**:
+   ```R
+   region_incidence <- tapply(data$e_inc_100k, data$g_whoregion, mean, na.rm = TRUE)
+   barplot(region_incidence, main = "Incidence by Region", xlab = "Region", ylab = "Incidence Rate")
+   ```
+
+4. **Scatter Plot of Incidence vs. Prevalence**:
+   ```R
+   plot(data$e_inc_100k, data$e_prev_100k, main = "Incidence vs. Prevalence", xlab = "Incidence Rate", ylab = "Prevalence Rate")
+   ```
+
+5. **Correlation Between Incidence and Prevalence**:
+   ```R
+   cor_value <- cor(data$e_inc_100k, data$e_prev_100k, use = "complete.obs")
+   print(paste("Correlation between Incidence and Prevalence:", cor_value))
+   ```
+
+6. **Trend Over Time for Incidence**:
+   ```R
+   plot(data$year, data$e_inc_100k, type = "l", main = "Trend of Incidence Over Time", xlab = "Year", ylab = "Incidence Rate")
+   ```
+
+7. **Boxplot of Incidence by Region**:
+   ```R
+   boxplot(data$e_inc_100k ~ data$g_whoregion, main = "Incidence by Region", xlab = "Region", ylab = "Incidence Rate")
+   ```
+
+8. **Count of Cases by Gender**:
+   ```R
+   gender_counts <- table(data$sex)
+   print(gender_counts)
+   ```
+
+9. **Mean Age of Patients**:
+   ```R
+   mean_age <- mean(data$age, na.rm = TRUE)
+   print(paste("Mean Age of Patients:", mean_age))
+   ```
+
+10. **Histogram of Incidence Rates**:
+    ```R
+    hist(data$e_inc_100k, main = "Distribution of Incidence Rates", xlab = "Incidence Rate", breaks = 50)
+    ```
+
+These analyses use base R functions to perform basic summary statistics, visualizations, and simple correlations. They should help you get started with understanding your TB dataset.
