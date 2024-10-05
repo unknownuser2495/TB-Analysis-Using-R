@@ -53,10 +53,6 @@ barplot(region_incidence, main = "Incidence by Region", xlab = "Region", ylab = 
 trends <- aggregate(e_inc_100k ~ year, data = data, FUN = mean)
 plot(trends$year, trends$incidence_rate, type = "l", xlab = "Year", ylab = "Incidence Rate")
 
-# Geographic Variations   (Doesn't work rn)
-geo_var <- aggregate(e_inc_100k ~ country, data = data, FUN = mean)
-barplot(geo_var$incidence_rate, names.arg = geo_var$country, las = 2, xlab = "Country", ylab = "Incidence Rate")
-
 # Risk Factors
 #Not enough data
 #model <- lm(e_inc_100k~ age + gender + hiv_status, data = data)
@@ -104,17 +100,6 @@ barplot(geo_var$e_inc_100k, names.arg = geo_var$g_whoregion, las = 2, xlab = "Re
 
 
 
-# Load the data set
-data <- read.csv("TB.csv")
-
-# Removing Null values by dropping them
-data <- na.omit(data)
-
-# Viewing the size of the data after removing the null values
-print(dim(data))
-
-# Viewing overall summary of the data
-print(summary(data))
 
 
 # 3. Risk Factors
