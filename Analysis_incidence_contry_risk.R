@@ -12,19 +12,19 @@ install_if_missing("ggplot2")
 install_if_missing("readr")
 
 # Load the dataset from the provided file path
-tb_data <- read.csv("C:\\Users\\Lenovo\\Desktop\\TB-Analysis-Using-R\\R files\\TB_burden_age_sex_2024-10-04.csv")
+TB_burden_age_sex <- read.csv("C:\\Users\\Lenovo\\Desktop\\TB-Analysis-Using-R\\R files\\TB_burden_age_sex_2024-10-04.csv")
 
 # Check the structure of the dataset to identify the columns
-str(tb_data)
+str(TB_burden_age_sex)
 
 # Print column names to identify the correct ones
-print(colnames(tb_data))
+print(colnames(TB_burden_age_sex))
 
 # Select relevant columns for analysis (adjust based on actual column names in your data)
 relevant_columns <- c("iso3", "age_group", "best", "risk_factor")
 
 # Subset the dataset with relevant columns
-tb_analysis <- tb_data[, relevant_columns]
+tb_analysis <- TB_burden_age_sex[, relevant_columns]
 
 # Rename columns for clarity
 colnames(tb_analysis)[colnames(tb_analysis) == "best"] <- "incidence_rate"
