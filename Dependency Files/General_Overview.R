@@ -15,3 +15,4 @@ data_overview <- function(df) {
 data_overview(TB_burden_age_sex)
 data_overview(TB_expenditure_utilisation)
 data_overview(TB_outcomes_age_sex)
+data_overview(TB)
