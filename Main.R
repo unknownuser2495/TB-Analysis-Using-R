@@ -8,12 +8,14 @@ source('Dependency Files/Data_Cleaning.R', chdir = TRUE)
 source("Dependency Files/General_Overview.R", chdir = TRUE)
 
 
+                          #For TB_burden_age_sex
+
 # Mean, median, etc. for specific columns
-mean(data_clean$best, na.rm = TRUE)
-median(data_clean$best, na.rm = TRUE)
+mean(TB_burden_age_sex$best, na.rm = TRUE)
+median(TB_burden_age_sex$best, na.rm = TRUE)
 
 # Summarize measure by country
-measure_by_country <- data_clean %>%
+measure_by_country <- TB_burden_age_sex %>%
   group_by(country) %>%
   summarize(total_measure = sum(best, na.rm = TRUE))
 
@@ -71,30 +73,15 @@ ggplot(measure_by_risk_factor, aes(x = "", y = total_measure, fill = risk_factor
 
 
 
-data <- TB_expenditure_utilisation
+            #For TB_expenditure_utilisation
 
-names(TB_expenditure_utilisation)
-
-na.omit(TB_expenditure_utilisation)
-
-dim(TB_expenditure_utilisation)
-
-
-# Load necessary libraries
-library(dplyr)
-
-# Mean imputation for numeric columns
-TB_expenditure_utilisation_imputed_mean <- TB_expenditure_utilisation %>%
-  mutate(across(where(is.numeric), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
-
-TB_expenditure_utilisation_clean <- TB_expenditure_utilisation_imputed_mean
 
 # Check the imputed TB_expenditure_utilisation
 head(TB_expenditure_utilisation_imputed_mean)
 
 
 # Summarize total expenditure by country
-exp_by_country <- TB_expenditure_utilisation_imputed_mean %>%
+exp_by_country <- TB_expenditure_utilisation %>%
   group_by(country) %>%
   summarize(total_exp = sum(exp_tot, na.rm = TRUE))
 
@@ -106,7 +93,7 @@ ggplot(exp_by_country, aes(x = reorder(country, -total_exp), y = total_exp)) +
 
 
 # Summarize total expenditure by year
-exp_by_year <- TB_expenditure_utilisation_imputed_mean %>%
+exp_by_year <- TB_expenditure_utilisation %>%
   group_by(year) %>%
   summarize(total_exp = sum(exp_tot, na.rm = TRUE))
 
@@ -117,34 +104,25 @@ ggplot(exp_by_year, aes(x = year, y = total_exp)) +
 
 
 # Scatter plot of expenditure vs. received funds
-ggplot(TB_expenditure_utilisation_clean, aes(x = rcvd_tot, y = exp_tot)) +
+ggplot(TB_expenditure_utilisation, aes(x = rcvd_tot, y = exp_tot)) +
   geom_point() +
   labs(title = "Expenditure vs. Received Funds", x = "Received Funds", y = "Expenditure")
 
 
 # Box plot of expenditure by region
-ggplot(TB_expenditure_utilisation_clean, aes(x = g_whoregion, y = exp_tot)) +
+ggplot(TB_expenditure_utilisation, aes(x = g_whoregion, y = exp_tot)) +
   geom_boxplot() +
   labs(title = "Expenditure by Region", x = "Region", y = "Expenditure")
 
 
 
 # Correlation between expenditure and received funds
-cor(TB_expenditure_utilisation_clean$exp_tot, TB_expenditure_utilisation_clean$rcvd_tot, use = "pairwise.complete.obs")
+cor(TB_expenditure_utilisation$exp_tot, TB_expenditure_utilisation$rcvd_tot, use = "pairwise.complete.obs")
 
 # Linear regression model
-model <- lm(exp_tot ~ rcvd_tot, TB_expenditure_utilisation = TB_expenditure_utilisation_clean)
+model <- lm(exp_tot ~ rcvd_tot, TB_expenditure_utilisation = TB_expenditure_utilisation)
 summary(model)
 
-
-
-
-
-
-
-# Load necessary libraries
-library(dplyr)
-library(ggplot2)
 
 # Summarize TB_expenditure_utilisation by region
 region_summary <- TB_expenditure_utilisation %>%
@@ -159,22 +137,9 @@ ggplot(region_summary, aes(x = reorder(g_whoregion, -total_exp), y = total_exp))
   theme_minimal()
 
 
+                            #For TB_outcomes_age_sex
 
 
-
-
-
-
-data <- TB_outcomes_age_sex
-
-names(TB_outcomes_age_sex)
-
-
-# Load necessary libraries
-library(ggplot2)
-
-# Melt the TB_outcomes_age_sex for easier plotting
-library(tidyr)
 outcomes_long <- TB_outcomes_age_sex %>%
   select(country, year, age_group, sex, succ, fail, died, lost, neval) %>%
   pivot_longer(cols = c(succ, fail, died, lost, neval), names_to = "outcome", values_to = "count")
@@ -204,13 +169,6 @@ ggplot(demographic_summary, aes(x = age_group, y = total_succ, fill = sex)) +
   theme_minimal()
 
 
-
-
-
-# Load necessary libraries
-library(ggplot2)
-library(tidyr)
-
 # Melt the TB_outcomes_age_sex for easier plotting
 outcomes_long <- TB_outcomes_age_sex %>%
   select(year, succ, fail, died, lost, neval) %>%
@@ -224,12 +182,6 @@ ggplot(outcomes_long, aes(x = factor(year), y = count, fill = outcome)) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 
-
-
-
-# Load necessary libraries
-library(corrplot)
-
 # Select relevant columns for correlation analysis
 outcome_columns <- TB_outcomes_age_sex %>%
   select(succ, fail, died, lost, neval)
@@ -239,11 +191,6 @@ cor_matrix <- cor(outcome_columns, use = "pairwise.complete.obs")
 
 # Create a heatmap of the correlation matrix
 corrplot(cor_matrix, method = "color", addCoef.col = "black", tl.col = "black", tl.srt = 45)
-
-
-
-# Load necessary libraries
-library(ggplot2)
 
 # Summarize TB_outcomes_age_sex by region
 region_summary <- TB_outcomes_age_sex %>%
@@ -260,11 +207,6 @@ ggplot(region_summary, aes(x = g_whoregion, y = total_succ)) +
   labs(title = "Total Successful TB Treatments by Region", x = "Region", y = "Total Successful Treatments") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-
-
-# Load necessary libraries
-library(ggplot2)
 
 # Filter TB_outcomes_age_sex for a specific year
 year_TB_outcomes_age_sex <- TB_outcomes_age_sex %>%
@@ -372,4 +314,3 @@ ggplot(filtered_tb_analysis, aes(x = iso3, y = incidence_rate)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   facet_wrap(~ risk_factor) +  # Separate by risk factor for clarity
   theme(legend.position = "none")  # Remove legend since all points are the same color
-
